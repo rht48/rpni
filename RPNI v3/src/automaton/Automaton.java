@@ -157,6 +157,11 @@ public class Automaton {
 		return getHeight(first, buff);
 	}
 	
+	public int getHeight(State s) {
+		StateBuffer buff = new StateBuffer();
+		return getHeight(s, buff);
+	}
+	
 	private int getHeight(State s, StateBuffer buff) {
 		buff.add(s);
 		if(buff.containsAll(map.get(s)))
@@ -177,6 +182,13 @@ public class Automaton {
 			}
 		}
 		return null;
+	}
+	
+	public State getStateFromCode(int code) {
+		for(var s : map.keySet()) {
+			if(s.getCode() == code) return s;
+		}
+		throw new NullPointerException("The state with code: " + code + " does not exist.");
 	}
 	
 	public State getStateFromId(String id) {
@@ -297,6 +309,15 @@ public class Automaton {
 	public void setFirst(State first) {
 		this.first = first;
 		this.currentState = this.first;
+	}
+	
+	public void setFirst() {
+		for(var s : map.keySet()) {
+			if(s.isStart()) {
+				first = s;
+				currentState = first;
+			}
+		}
 	}
 	
 }

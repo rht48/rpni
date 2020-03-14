@@ -13,6 +13,10 @@ public class PTA {
 		for(int i = 1; i < auto.getAutos().size(); i++) {
 			pta(a, auto.getAutos().get(i));
 		}
+		Writer.write("data/dat", "FN1;PTA finished !\n");
+		Writer.write("data/dat", "ID;Setting new IDs for better clarity\n");
+		Writer.write("data/dat", "PO;Setting positions for better clarity\n");
+		Writer.write("data/dat", "FN2;Setting up for RPNI\n");
 		return a;
 	}
 	

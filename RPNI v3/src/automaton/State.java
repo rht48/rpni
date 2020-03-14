@@ -10,6 +10,8 @@ public class State {
 	private String id;
 	private static int NUM_CODE = 0;
 	private int code;
+	private boolean isBlue;
+	private boolean isRed;
 	
 	public State() {
 		this(0, 0, "");
@@ -23,12 +25,16 @@ public class State {
 		this.isStart = false;
 		this.isFinish = false;
 		this.code = NUM_CODE++;
+		this.isBlue = false;
+		this.isRed = false;
 	}
 	
 	public void merge(State s) {
 		id += "," + s.id;
 		isStart = isStart || s.isStart;
 		isFinish = isFinish || s.isFinish;
+		isRed = isRed || s.isRed;
+		//isBlue = isBlue || s.isBlue;
 	}
 	
 	public State clone() {
@@ -37,6 +43,8 @@ public class State {
 		s.isStart = isStart;
 		s.isVisible = s.isVisible;
 		s.code = code;
+		s.isRed = isRed;
+		s.isBlue = isBlue;
 		NUM_CODE--;
 		return s;
 	}
@@ -91,6 +99,22 @@ public class State {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public void setBlue(boolean b) {
+		this.isBlue = b;
+	}
+	
+	public boolean isBlue() {
+		return isBlue;
+	}
+	
+	public void setRed(boolean b) {
+		this.isRed = b;
+	}
+	
+	public boolean isRed() {
+		return this.isRed;
 	}
 	
 	public boolean equals(Object o) {

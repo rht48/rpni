@@ -17,9 +17,14 @@ public class RPNI {
 		List<State> blue = new ArrayList<>();
 		
 		Automaton old_hyp = auto.clone();
-		red.add(old_hyp.getFirst());
+		State fr = old_hyp.getFirst();
+		red.add(fr);
+		Writer.write("data/dat", "SR;State {" + fr.getId() + "} is our hypothesis;" + fr.getCode() + ";-1\n");
+		Writer.write("data/dat", "SB2;Setting direct descendants to blue;" + fr.getCode() + ";-1\n");
+		//Writer.write("data/dat", "FN2;This is the base hypothesis\n");
 		for(var t : old_hyp.getTransitions(old_hyp.getFirst())) {
 			blue.add(t.getValue());
+			t.getValue().setBlue(true);
 		}
 		
 		
@@ -44,6 +49,8 @@ public class RPNI {
 					success = true;
 					red.add(0, ns);
 					red.remove(s_red);
+					Writer.write("data/dat", "TS;No negative examples have been accepted, this is the new hypothesis\n");
+					Writer.write("data/dat", "SB1;Setting direct descendants to blue;" + ns.getCode() + ";-1\n");
 					for(var t : hyp.getTransitions(ns)) {
 						if(!red.contains(t.getValue()))
 							blue.add(t.getValue());
@@ -57,9 +64,13 @@ public class RPNI {
 			}
 			
 			if(!success) {
+				s_blue.setBlue(false);
+				s_blue.setRed(true);
+				Writer.write("data/dat", "SR;No possible merges for {" + s_blue.getId() + "} so adding to red;" + s_blue.getCode() + ";-1\n");
 				red.add(s_blue);
 				//System.out.println("FAILED! " + red.size());
 				State ns = old_hyp.getNewState(s_blue);
+				Writer.write("data/dat", "SB2;Setting direct descendants to blue;" + ns.getCode() + ";-1\n");
 				for(var t : old_hyp.getTransitions(ns)) {
 					if(!red.contains(t.getValue()))
 						blue.add(t.getValue());
@@ -67,6 +78,7 @@ public class RPNI {
 			}
 			
 		}
+		Writer.write("data/dat", "PO;Repositioning !\n");
 		return old_hyp;
 	}
 	
