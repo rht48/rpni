@@ -9,6 +9,7 @@ import java.util.Set;
 import buffer.StateBuffer;
 import exceptions.UndefinedFirstStateException;
 import exceptions.UnknownStateException;
+import writers.Writer;
 
 public class Automaton {
 	
@@ -67,7 +68,8 @@ public class Automaton {
 	private void determinize(State s, StateBuffer buff) {
 		buff.add(s);
 		while(!isDeterministic(s)) {
-			System.out.println("State " + s.getId() + " is not determinized");
+			//System.out.println("State " + s.getId() + " is not determinized");
+			Writer.write("data/dat", "NT;{" + s.getId() + "} is not determinized\n");
 			determinize(s);
 		}
 		List<Transition<String,State>> trans = new ArrayList<>(map.get(s));
@@ -94,6 +96,7 @@ public class Automaton {
 			List<State> list = doubles.get(str);
 			State ref = list.get(0);
 			for(int i = 1; i < list.size(); i++) {
+				Writer.write("data/dat", "MO;Merging {" + ref.getId() + "} with {" + list.get(i).getId() + "};" + ref.getCode() + ";" + list.get(i).getCode() + "\n");
 				mergeOut(ref, list.get(i), this);
 			}
 		}
@@ -154,6 +157,11 @@ public class Automaton {
 		return getHeight(first, buff);
 	}
 	
+	public int getHeight(State s) {
+		StateBuffer buff = new StateBuffer();
+		return getHeight(s, buff);
+	}
+	
 	private int getHeight(State s, StateBuffer buff) {
 		buff.add(s);
 		if(buff.containsAll(map.get(s)))
@@ -174,6 +182,13 @@ public class Automaton {
 			}
 		}
 		return null;
+	}
+	
+	public State getStateFromCode(int code) {
+		for(var s : map.keySet()) {
+			if(s.getCode() == code) return s;
+		}
+		throw new NullPointerException("The state with code: " + code + " does not exist.");
 	}
 	
 	public State getStateFromId(String id) {
@@ -294,6 +309,15 @@ public class Automaton {
 	public void setFirst(State first) {
 		this.first = first;
 		this.currentState = this.first;
+	}
+	
+	public void setFirst() {
+		for(var s : map.keySet()) {
+			if(s.isStart()) {
+				first = s;
+				currentState = first;
+			}
+		}
 	}
 	
 }

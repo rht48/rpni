@@ -10,6 +10,8 @@ import automaton.State;
 import examples.Example;
 import examples.Examples;
 import exceptions.UnknownStateException;
+import sequence.Move;
+import sequence.Sequence;
 
 public class Loader {
 	
@@ -57,5 +59,25 @@ public class Loader {
 			e.printStackTrace();
 		}
 		return exs;
+	}
+	
+	public static Sequence loadSequence() {
+		Sequence sq = new Sequence();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("data/dat"));
+			String str;
+			while((str = br.readLine()) != null) {
+				String[] strs = str.split(";");
+				if(strs.length == 2) {
+					sq.addMove(new Move(strs[0],strs[1]));
+				}else if(!strs[0].equals("")) {
+					sq.addMove(new Move(strs[0], strs[1], Integer.parseInt(strs[2]), Integer.parseInt(strs[3])));
+				}
+			}
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return sq;
 	}
 }

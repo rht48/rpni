@@ -44,7 +44,8 @@ public class PositionManager {
 		for(var t : auto.getTransitions(s)) {
 			if(!buff.contains(t.getValue())) {
 				setPositions(t.getValue(), auto, posX, posY, incrX, incrY, buff);
-				posY += incrY;
+				int h = auto.getHeight(t.getValue());
+				posY += h * incrY;
 			}
 		}
 	}

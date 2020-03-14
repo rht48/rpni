@@ -36,4 +36,8 @@ public class StateBuffer {
 	public boolean containsAllStates(List<State> s) {
 		return buffer.containsAll(s);
 	}
+	
+	public List<State> getBuffer() {
+		return buffer;
+	}
 }

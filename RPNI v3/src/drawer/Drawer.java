@@ -13,19 +13,38 @@ public class Drawer {
 	private static final float TRIANGLE_POS = 5;
 	private static final float OFFSET_CURB = 4;
 	private static final float OFFSET_LINE = 5;
+	private static final float LINE_LENGTH = 70;
 	
 	public Drawer(PApplet parent) {
 		this.parent = parent;
 	}
 	
 	public void drawStates(Automaton auto) {
+		parent.textSize(11);
 		Set<State> states = auto.getStates();
 		for(var s : states) {
 			if(s.isVisible()) {
-				if(s.isStart()) 
-					parent.fill(0, 255, 0);
-				else 
+				if(s.isStart()) {
+					parent.fill(0);
+					float p1_x = -DIAMETER/2 + s.getPosX();
+					float p1_y = 0 + s.getPosY();
+					
+					float p2_x = - DIAMETER/2 - TRIANGLE_POS + s.getPosX();
+					float p2_y = TRIANGLE_POS + s.getPosY();
+					
+					float p3_x = - DIAMETER/2 - TRIANGLE_POS + s.getPosX();
+					float p3_y = - TRIANGLE_POS + s.getPosY();
+					parent.triangle(p1_x, p1_y, p2_x, p2_y, p3_x, p3_y);
 					parent.fill(255);
+					parent.line(s.getPosX() - LINE_LENGTH, s.getPosY(), s.getPosX() - DIAMETER/2, s.getPosY());
+				}
+				if(s.isBlue()){
+					parent.fill(0, 0, 255);
+				}else if(s.isRed()){
+					parent.fill(255, 0, 0);
+				}else {
+					parent.fill(255);
+				}
 				String id = s.getId();
 				parent.ellipse(s.getPosX(), s.getPosY(), DIAMETER, DIAMETER);
 				if(s.isFinish()) 
@@ -37,6 +56,7 @@ public class Drawer {
 	}
 	
 	public void drawTransitions(Automaton auto) {
+		parent.textSize(11);
 		Set<State> states = auto.getStates();
 		for(var s : states) {
 			if(s.isVisible()) {
@@ -67,15 +87,15 @@ public class Drawer {
 		 * Calculating the corners of the triangle on the tip of the line and drawing it
 		 */
 		float p1_x = 0;
-		float p1_y = DIAMETER/2;
+		float p1_y = -DIAMETER/2;
 		
 		float p2_x = - TRIANGLE_POS;
-		float p2_y = DIAMETER/2 + TRIANGLE_POS;
+		float p2_y = -(DIAMETER/2 + TRIANGLE_POS);
 		
 		float p3_x = + TRIANGLE_POS;
-		float p3_y = DIAMETER/2 + TRIANGLE_POS;
+		float p3_y = -(DIAMETER/2 + TRIANGLE_POS);
 		parent.noFill();
-		parent.arc(-DIAMETER/2, DIAMETER/2, DIAMETER, DIAMETER, 0, 3* PApplet.PI/2);
+		parent.arc(-DIAMETER/2, -DIAMETER/2, DIAMETER, DIAMETER, PApplet.PI/2, 2 * PApplet.PI);
 		parent.fill(0);
 		parent.triangle(p1_x, p1_y, p2_x, p2_y, p3_x, p3_y);
 		
@@ -83,7 +103,7 @@ public class Drawer {
 		 * Set the position of the transition's name and display it
 		 */
 		float posx = -DIAMETER/2 - parent.textWidth(name)/2 - OFFSET_CURB;
-		float posy = DIAMETER/2 + (parent.textAscent() - parent.textDescent())/2 + OFFSET_CURB;
+		float posy = -(DIAMETER/2 - (parent.textAscent() - parent.textDescent())/2 + OFFSET_CURB);
 		parent.text(name, posx, posy);
 		parent.popMatrix();
 	}
@@ -170,5 +190,10 @@ public class Drawer {
 		float posy = mult * (- OFFSET_LINE - 3 - h/2) + dy;
 		parent.text(name, posx, posy);
 		parent.popMatrix();
+	}
+	
+	public void inform(String str) {
+		parent.textSize(20);
+		parent.text(str, parent.width - parent.textWidth(str) - 50, 50);
 	}
 }
