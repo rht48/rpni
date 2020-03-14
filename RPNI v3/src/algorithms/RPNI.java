@@ -9,6 +9,7 @@ import automaton.Automaton;
 import automaton.State;
 import examples.Examples;
 import exceptions.UndefinedFirstStateException;
+import writers.Writer;
 
 public class RPNI {
 	public static Automaton rpni(Automaton auto, Examples neg) throws UndefinedFirstStateException {
@@ -31,14 +32,15 @@ public class RPNI {
 				State s_red= tmp_red.remove(0);
 				Automaton hyp = old_hyp.clone();
 				
-				System.out.println("Merging: " + s_red.getId() + " " + s_blue.getId());
+				//System.out.println("Merging: " + s_red.getId() + " " + s_blue.getId());
+				Writer.write("data/dat", "MG;Merging {" + s_red.getId() + "} with {" + s_blue.getId() + "};" + s_red.getCode() + ";" + s_blue.getCode() + "\n");
 				hyp.merge(s_red, s_blue);
 				hyp.determinize();
 				
 				State ns = hyp.getNewState(s_red);
-				System.out.println("New state: " + ns.getId());
+				//System.out.println("New state: " + ns.getId());
 				if(test(hyp, neg)) {
-					System.out.println("TEST SUCCESFUL!");
+					//System.out.println("TEST SUCCESFUL!");
 					success = true;
 					red.add(0, ns);
 					red.remove(s_red);
@@ -49,13 +51,14 @@ public class RPNI {
 					old_hyp = hyp;
 					break;
 				}else {
-					System.out.println("TEST UNSUCCESSFUL, ROLLBACK");
+					Writer.write("data/dat", "RB;Rolling back to previous automaton\n");
+					//System.out.println("TEST UNSUCCESSFUL, ROLLBACK");
 				}
 			}
 			
 			if(!success) {
 				red.add(s_blue);
-				System.out.println("FAILED! " + red.size());
+				//System.out.println("FAILED! " + red.size());
 				State ns = old_hyp.getNewState(s_blue);
 				for(var t : old_hyp.getTransitions(ns)) {
 					if(!red.contains(t.getValue()))
@@ -75,11 +78,14 @@ public class RPNI {
 				auto.feed(strs[i]);
 			}
 			if(auto.isFinished()) {
-				System.out.print("Example {");
+				//System.out.print("Example {");
+				Writer.write("data/dat", "NT;Example {");
 				for(int i = 0; i < strs.length - 1; i++) {
-					System.out.print(strs[i] + ", ");
+					//System.out.print(strs[i] + ", ");
+					Writer.write("data/dat", strs[i] + ",");
 				}
-				System.out.println(strs[strs.length - 1] + "} was accepted");
+				//System.out.println(strs[strs.length - 1] + "} was accepted");
+				Writer.write("data/dat", strs[strs.length - 1] + "} was accepted\n");
 				return false;
 			}
 		}

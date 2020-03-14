@@ -11,6 +11,7 @@ import loaders.Loader;
 import managers.IdManager;
 import managers.PositionManager;
 import processing.core.PApplet;
+import writers.Writer;
 
 public class Launcher extends PApplet{
 	
@@ -24,6 +25,7 @@ public class Launcher extends PApplet{
 	}
 	
 	public void setup() {
+		Writer.clear("data/dat");
 		try {
 			mca = Loader.loadMCA();
 			//pta = PTA.pta(mca.clone());
