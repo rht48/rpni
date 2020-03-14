@@ -7,6 +7,11 @@ import automaton.Automaton;
 import automaton.State;
 import processing.core.PApplet;
 
+/**
+ * This class has the aim to draw all automatons.
+ * @author Romain
+ *
+ */
 public class Drawer {
 	private PApplet parent;
 	public static final float DIAMETER = 50;
@@ -15,17 +20,28 @@ public class Drawer {
 	private static final float OFFSET_LINE = 5;
 	private static final float LINE_LENGTH = 70;
 	
+	/**
+	 * Constructor for the Drawer class
+	 * @param parent PApplet
+	 */
 	public Drawer(PApplet parent) {
 		this.parent = parent;
 	}
 	
+	/**
+	 * Draws all the states in an automaton
+	 * @param auto Automaton
+	 */
 	public void drawStates(Automaton auto) {
 		parent.textSize(11);
 		Set<State> states = auto.getStates();
+		//For each state in the automaton, draw it
 		for(var s : states) {
 			if(s.isVisible()) {
+				//If the state is at the start, then draw a line coming to it
 				if(s.isStart()) {
 					parent.fill(0);
+					//Params for the corners of the triangle
 					float p1_x = -DIAMETER/2 + s.getPosX();
 					float p1_y = 0 + s.getPosY();
 					
@@ -34,10 +50,14 @@ public class Drawer {
 					
 					float p3_x = - DIAMETER/2 - TRIANGLE_POS + s.getPosX();
 					float p3_y = - TRIANGLE_POS + s.getPosY();
+					//Draw the triangle
 					parent.triangle(p1_x, p1_y, p2_x, p2_y, p3_x, p3_y);
 					parent.fill(255);
+					//Draw the line
 					parent.line(s.getPosX() - LINE_LENGTH, s.getPosY(), s.getPosX() - DIAMETER/2, s.getPosY());
 				}
+				//These are very explicit: if the state is a certain color, then the state will be drawn in that color, else 
+				//the state will be white
 				if(s.isBlue()){
 					parent.fill(0, 0, 255);
 				}else if(s.isRed()){
@@ -45,22 +65,35 @@ public class Drawer {
 				}else {
 					parent.fill(255);
 				}
-				String id = s.getId();
+				
+				
+				//Draw the ellipse of the state
 				parent.ellipse(s.getPosX(), s.getPosY(), DIAMETER, DIAMETER);
+				//If the state is at the end, then we draw a smaller ellipse above it, so that we have the impression of having
+				//a double circle.
 				if(s.isFinish()) 
 					parent.ellipse(s.getPosX(), s.getPosY(), DIAMETER - 5, DIAMETER - 5);
+				//In the next three line, we draw the name of the state onto the circles.
+				String id = s.getId();
 				parent.fill(0);
 				parent.text(id, s.getPosX() - parent.textWidth(id)/2, s.getPosY() + (parent.textAscent() - parent.textDescent())/2);
 			}
 		}
 	}
 	
+	/**
+	 * Draws the transitions between states
+	 * @param auto Automaton
+	 */
 	public void drawTransitions(Automaton auto) {
 		parent.textSize(11);
 		Set<State> states = auto.getStates();
+		//For all states in the automaton
 		for(var s : states) {
 			if(s.isVisible()) {
+				//For all connections going out of the state s
 				for(var t : auto.getTransitions(s)) {
+					//Draw the transition between the state s and the target state
 					if(t.getValue().isVisible())
 						drawTransition(s, t.getValue(), auto, t.getKey());
 					
@@ -69,6 +102,13 @@ public class Drawer {
 		}
 	}
 	
+	/**
+	 * This function determines if the connection is between two distinct states or to the same state.
+	 * @param s1 State
+	 * @param s2 State
+	 * @param auto Automaton
+	 * @param name String The name of the transition
+	 */
 	private void drawTransition(State s1, State s2, Automaton auto, String name) {
 		if(s1 == s2)
 			drawCurb(s1, name);
@@ -76,6 +116,11 @@ public class Drawer {
 			drawLine(s1, s2, auto, name);
 	}
 	
+	/**
+	 * Draws a circle to the current state
+	 * @param s State
+	 * @param name String The name of the transition
+	 */
 	private void drawCurb(State s, String name) {
 		/**
 		 * Push the matrix to the current state
@@ -108,6 +153,14 @@ public class Drawer {
 		parent.popMatrix();
 	}
 	
+	/**
+	 * Draws a line to the next state. If there is a state in between the two states,
+	 * then it will be curvy, so that it avoids "hitting" the next state and thus be clear to the user.
+	 * @param s1
+	 * @param s2
+	 * @param auto
+	 * @param name
+	 */
 	private void drawLine(State s1, State s2, Automaton auto, String name) {
 		/**
 		 * Putting necessary values into variables
@@ -192,6 +245,10 @@ public class Drawer {
 		parent.popMatrix();
 	}
 	
+	/**
+	 * This is for putting text in the window
+	 * @param str String The text we want to put on the screen
+	 */
 	public void inform(String str) {
 		parent.textSize(20);
 		parent.text(str, parent.width - parent.textWidth(str) - 50, 50);

@@ -28,9 +28,15 @@ public class Launcher extends PApplet{
 		size((int)WIDTH, (int)HEIGHT);
 	}
 	
+	/**
+	 * Initializes all Automatons (mca, pta and rpni)
+	 */
 	public void setup() {
 		Writer.clear("data/dat");
 		Writer.write("data/dat", "NT;Loaded MCA\n");
+		/**
+		 * Seeting up the MCA
+		 */
 		try {
 			mca = Loader.loadMCA();
 		} catch (UnknownStateException e) {
@@ -43,6 +49,9 @@ public class Launcher extends PApplet{
 			e.printStackTrace();
 		}
 		
+		/**
+		 * Setting up the pta
+		 */
 		try {
 			pta = PTA.pta(mca.clone());
 			PositionManager.setPositions(pta, width, height);
@@ -51,6 +60,9 @@ public class Launcher extends PApplet{
 			e.printStackTrace();
 		}
 		
+		/**
+		 * Setting up the rpni
+		 */
 		try {
 			rpni = RPNI.rpni(pta.clone(), Loader.loadExamples("-"));
 			PositionManager.setPositions(rpni, width, height);
@@ -64,6 +76,9 @@ public class Launcher extends PApplet{
 
 	}
 	
+	/**
+	 * Draws the automatons.
+	 */
 	public void draw() {
 		background(190);
 		
@@ -72,6 +87,9 @@ public class Launcher extends PApplet{
 		drawer.inform(sq.toString());
 	}
 	
+	/**
+	 * Is a key is pressed then advance in the sequence.
+	 */
 	public void keyPressed() {
 		if(keyCode == RIGHT) {
 			if(sq.hasNext()) {
