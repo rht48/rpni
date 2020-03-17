@@ -11,4 +11,6 @@ For the null example, you have to put nothing in one line.
 Finally, run the code and see what the algorithm does !  
 To advance in the algorithm, push the right key. To go back, push the left key.
 
+Project needs to be compiled beforehand !
+
 Credit: Romain HUBERT (rht48)
