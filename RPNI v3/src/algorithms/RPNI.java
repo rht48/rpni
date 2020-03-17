@@ -26,7 +26,7 @@ public class RPNI {
 	public static Automaton rpni(Automaton auto, Examples neg) throws UndefinedFirstStateException {
 		/*
 		 * Red list is the list of states that are fixed. They are our hypothesis. 
-		 */
+		 */ 
 		List<State> red = new ArrayList<>();
 		/*
 		 * Blue list is the list of descendants of red.
