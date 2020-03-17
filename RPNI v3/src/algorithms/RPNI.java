@@ -150,7 +150,7 @@ public class RPNI {
 					if(!red.contains(t.getValue()))
 						blue.add(t.getValue());
 				}
-			}
+			} 
 		}
 		Writer.write("data/dat", "PO;Repositioning !\n");
 		return old_hyp;
