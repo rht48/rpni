@@ -8,7 +8,15 @@ package automaton;
  * @param <T>
  */
 public class Transition<E,T> {
+	
+	/**
+	 * Key for the transition.
+	 */
 	private E key;
+	
+	/**
+	 * Value corresponding to the transition.
+	 */
 	private T value;
 	
 	/**

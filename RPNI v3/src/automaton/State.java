@@ -89,6 +89,10 @@ public class State {
 		isRed = isRed || s.isRed;
 	}
 	
+	/**
+	 * Clones the current state.
+	 * @return State
+	 */
 	public State clone() {
 		State s = new State(posX, posY, id);
 		s.isFinish = isFinish;
@@ -101,74 +105,147 @@ public class State {
 		return s;
 	}
 	
+	/**
+	 * A simple getter for the code.
+	 * @return int code
+	 */
 	public int getCode() {
 		return code;
 	}
-
+	
+	/**
+	 * A simple getter for the position X.
+	 * @return float posX
+	 */
 	public float getPosX() {
 		return posX;
 	}
-
+	
+	/**
+	 * Setter for the position X.
+	 * @param float posX
+	 */
 	public void setPosX(float posX) {
 		this.posX = posX;
 	}
 
+	/**
+	 * A simple getter for the position Y.
+	 * @return float posY
+	 */
 	public float getPosY() {
 		return posY;
 	}
-
+	
+	/**
+	 * Setter for the position Y.
+	 * @param float posY
+	 */
 	public void setPosY(float posY) {
 		this.posY = posY;
 	}
-
+	
+	/**
+	 * Is the current state visible ?
+	 * @return boolean
+	 */
 	public boolean isVisible() {
 		return isVisible;
 	}
-
+	
+	/**
+	 * Setter for isVisible variable.
+	 * @param isVisible
+	 */
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
 	}
-
+	
+	/**
+	 * Is the current state at the start ?
+	 * @return boolean
+	 */
 	public boolean isStart() {
 		return isStart;
 	}
-
+	
+	/**
+	 * Setter for isStart variable.
+	 * @param isStart
+	 */
 	public void setStart(boolean isStart) {
 		this.isStart = isStart;
 	}
-
+	
+	/**
+	 * Is the current state at the end ?
+	 * @return boolean
+	 */
 	public boolean isFinish() {
 		return isFinish;
 	}
-
+	
+	/**
+	 * Setter for the isFinish variable.
+	 * @param isFinish
+	 */
 	public void setFinish(boolean isFinish) {
 		this.isFinish = isFinish;
 	}
-
+	
+	/**
+	 * A simple getter for the id of the state
+	 * @return String
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Sets the id of the state (not a unique ID).
+	 * @param id
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 	
+	/**
+	 * Sets the isBlue variable.
+	 * @param b
+	 */
 	public void setBlue(boolean b) {
 		this.isBlue = b;
 	}
 	
+	/**
+	 * Is the current state blue ?
+	 * @return boolean
+	 */
 	public boolean isBlue() {
 		return isBlue;
 	}
 	
+	/**
+	 * Sets the isRed variable.
+	 * @param b
+	 */
 	public void setRed(boolean b) {
 		this.isRed = b;
 	}
 	
+	/**
+	 * Is the current state red ?
+	 * @return boolean
+	 */
 	public boolean isRed() {
 		return this.isRed;
 	}
 	
+	/**
+	 * Two states are equal when their codes are the same.
+	 * Note that it isn't based on the id, only the code.
+	 * @return boolean
+	 */
 	public boolean equals(Object o) {
 		if(o instanceof State) {
 			State s = (State)o;

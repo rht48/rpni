@@ -1,10 +1,14 @@
 package drawer;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import automaton.Automaton;
 import automaton.State;
+import automaton.Transition;
 import processing.core.PApplet;
 
 /**
@@ -88,11 +92,41 @@ public class Drawer {
 	public void drawTransitions(Automaton auto) {
 		parent.textSize(11);
 		Set<State> states = auto.getStates();
-		//For all states in the automaton
+		/*
+		 * For all states in the automaton
+		 */
 		for(var s : states) {
 			if(s.isVisible()) {
-				//For all connections going out of the state s
+				/*
+				 * This part is to search every connection to a state, so that visually the names
+				 * don't overlap.
+				 * Here we generate all names going to a state.
+				 */
+				Map<State,List<String>> m = new HashMap<>();
 				for(var t : auto.getTransitions(s)) {
+					if(!m.containsKey(t.getValue())) {
+						List<String> l = new ArrayList<>();
+						m.put(t.getValue(), l);
+					}
+					m.get(t.getValue()).add(t.getKey());
+				}
+				/*
+				 * And here, we create a new transition with the new id.
+				 */
+				List<Transition<String,State>> list = new ArrayList<>();
+				for(var st : m.keySet()) {
+					String id = "";
+					List<String> lst = m.get(st);
+					id = lst.get(0);
+					for(int i = 1; i < lst.size(); i++) {
+						id += "," + lst.get(i);
+					}
+					list.add(new Transition<String,State>(id,st));
+				}
+				/*
+				 * For all connections in the new list
+				 */
+				for(var t : list) {
 					//Draw the transition between the state s and the target state
 					if(t.getValue().isVisible())
 						drawTransition(s, t.getValue(), auto, t.getKey());
