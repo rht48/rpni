@@ -37,7 +37,6 @@ public class RPNI {
 		 * old_hyp is our previous automaton, in case that the new one is bad.
 		 */
 		Automaton old_hyp = auto.clone();
-		
 		/*
 		 * Get the first state of the automaton.
 		 */
